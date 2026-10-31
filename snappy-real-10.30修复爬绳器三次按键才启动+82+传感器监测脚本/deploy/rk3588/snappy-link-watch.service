@@ -1,0 +1,37 @@
+# ============================================================
+# @file snappy-link-watch.service
+# @brief 记录 eth0（G20 链路）载波跳变与内核上下文（只读观测，不影响控制）
+# ============================================================
+
+[Unit]
+Description=Snappy link transition watcher (eth0 / USB-RS485)
+Documentation=file:/root/snappy-real/deploy/README.md
+After=network.target
+StartLimitIntervalSec=60
+StartLimitBurst=5
+
+[Service]
+Type=simple
+User=root
+Group=root
+WorkingDirectory=/root/snappy-real
+
+Environment=SNAPPY_ROOT=/root/snappy-real
+Environment=SNAPPY_LINK_WATCH_IFACE=eth0
+Environment=SNAPPY_LINK_WATCH_MODE=auto
+Environment=SNAPPY_LINK_WATCH_POLL_MS=1000
+
+# 只读观测：不写硬件、不依赖控制进程
+ExecStart=/bin/bash /root/snappy-real/tools/snappy_link_watch.sh
+
+Restart=always
+RestartSec=5
+
+RestartPreventExitStatus=126 127
+Nice=10
+StandardInput=null
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

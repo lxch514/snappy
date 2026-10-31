@@ -1,0 +1,11 @@
+# Replace literal example usernames before deployment.
+user snappy-device-001
+topic read snappy/v1/robots/snappy-001/down/command
+topic write snappy/v1/robots/snappy-001/up/#
+
+user snappy-cloud-collector
+topic read snappy/v1/robots/+/up/#
+
+user snappy-cloudctl
+topic write snappy/v1/robots/+/down/command
+topic read snappy/v1/robots/+/up/ack

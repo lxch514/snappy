@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "kind": "ack",
+  "robot_id": "snappy-001",
+  "link_id": "g20_udp",
+  "boot_id": "boot-0001",
+  "message_id": "message-0042",
+  "ack_id": "ack-0042-1",
+  "control_epoch": 7,
+  "status": "ACCEPTED",
+  "code": "QUEUED",
+  "detail": "accepted by fake control channel"
+}

@@ -1,0 +1,29 @@
+# ============================================================
+# @file snappy-packet-capture.service
+# @brief 网络与 CAN 抓包取证
+#
+# 一次性服务，默认不启用；抓包范围由 SNAPPY_CAPTURE_* 控制。
+# 现场排查串口与网络异常时手动启动。
+# ============================================================
+
+[Unit]
+Description=Snappy optional packet capture
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=root
+Group=root
+EnvironmentFile=-/etc/snappy/snappy-diagnostics.env
+Environment=SNAPPY_LOG_DIR=/root/var/log/snappy-real
+Environment=SNAPPY_CAPTURE_DIR=/root/var/log/snappy-real/captures
+Environment=SNAPPY_CAPTURE_SECONDS=120
+Environment=SNAPPY_CAPTURE_IFACE=any
+Environment=SNAPPY_CAN_IFACE=can0
+ExecStartPre=-/bin/mkdir -p /root/var/log/snappy-real/captures
+ExecStartPre=-/bin/chmod +x /root/snappy-real/tools/snappy_packet_capture.sh
+ExecStart=/root/snappy-real/tools/snappy_packet_capture.sh all
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,1 @@
+"""Minimal snappy cloud components."""

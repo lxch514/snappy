@@ -1,0 +1,407 @@
+{
+  "schema_version": 1,
+  "template_scope": "snappy_real",
+  "robot_id": "snappy-001",
+
+  "bringup": {
+    "mode": "production",
+    "allow_partial_devices": false,
+    "noop_missing_actuators": false,
+    "ignore_device_startup_failures": false,
+    "quarantine_failed_devices": false,
+    "quarantine_after_failures": 2,
+    "quarantine_duration_ms": 2000,
+    "arm_requires_all_required_devices": true,
+
+    "device_backoff_enabled": true,
+    "device_backoff_initial_ms": 10000,
+    "device_backoff_multiplier": 2,
+    "device_backoff_offline_round": 4,
+    "device_backoff_max_ms": 300000
+  },
+
+  "can_buses": {
+    "port_can_0": {
+      "backend": "socketcan",
+      "interface_name": "can0",
+      "bitrate": 1000000,
+      "sample_point": 0.875,
+      "sjw": 4,
+      "tx_queue_length": 1000,
+      "auto_configure_interface": true,
+      "restart_on_bus_off": true,
+      "restart_ms": 100,
+      "receive_own_messages": false,
+      "default_tx_timeout_ms": 120,
+      "default_rx_timeout_ms": 20,
+      "allow_start_failure": false
+    }
+  },
+
+  "rs485_ports": {
+    "port_usb_rs485_0": {
+      "backend": "serial",
+      "device_path": "/dev/ttyACM0",
+      "baud_rate": 9600,
+      "data_bits": 8,
+      "parity": "none",
+      "stop_bits": 1,
+      "inter_frame_gap_ms": 4,
+      "read_idle_gap_ms": 4,
+      "low_latency": true,
+      "shared_lock_group": "usb_rs485_0",
+      "shared_transaction_group": "wch_quad_rs485",
+      "rs485_direction_mode": "AUTO"
+    },
+    "port_usb_rs485_1": {
+      "backend": "serial",
+      "device_path": "/dev/ttyACM1",
+      "baud_rate": 9600,
+      "data_bits": 8,
+      "parity": "none",
+      "stop_bits": 1,
+      "inter_frame_gap_ms": 4,
+      "read_idle_gap_ms": 4,
+      "low_latency": true,
+      "shared_lock_group": "usb_rs485_1",
+      "shared_transaction_group": "wch_quad_rs485",
+      "rs485_direction_mode": "AUTO"
+    },
+    "port_rs485_0": {
+      "backend": "serial",
+      "device_path": "/dev/ttyS0",
+      "baud_rate": 9600,
+      "data_bits": 8,
+      "parity": "none",
+      "stop_bits": 1,
+      "inter_frame_gap_ms": 4,
+      "read_idle_gap_ms": 4,
+      "low_latency": true,
+      "shared_lock_group": "board_rs485_0",
+      "rs485_direction_mode": "AUTO"
+    },
+    "port_rs485_3": {
+      "backend": "serial",
+      "device_path": "/dev/ttyS3",
+      "baud_rate": 9600,
+      "data_bits": 8,
+      "parity": "none",
+      "stop_bits": 1,
+      "inter_frame_gap_ms": 4,
+      "read_idle_gap_ms": 4,
+      "low_latency": true,
+      "shared_lock_group": "board_rs485_3",
+      "rs485_direction_mode": "AUTO"
+    }
+  },
+
+  "devices": {
+    "lidar_brush_left": {
+      "backend": "real",
+      "enabled": true,
+      "bus_id": "port_usb_rs485_0",
+      "model": "UBS1000-C18R-485",
+      "protocol_family": "modbus_rtu",
+      "protocol_profile": "ubs1000_c18r",
+      "station_id": "0x23",
+      "role": "brush_left_distance",
+      "poll_interval_ms": 150,
+      "response_deadline_ms": 120,
+      "max_consecutive_failures": 3,
+      "quarantine_duration_ms": 2000,
+      "read_retry_count": 1
+    },
+    "lidar_brush_right": {
+      "backend": "real",
+      "enabled": true,
+      "bus_id": "port_usb_rs485_0",
+      "model": "UBS1000-C18R-485",
+      "protocol_family": "modbus_rtu",
+      "protocol_profile": "ubs1000_c18r",
+      "station_id": "0x24",
+      "role": "brush_right_distance",
+      "poll_interval_ms": 150,
+      "response_deadline_ms": 120,
+      "max_consecutive_failures": 3,
+      "quarantine_duration_ms": 2000,
+      "read_retry_count": 1
+    },
+    "lidar_body_front": {
+      "backend": "real",
+      "enabled": true,
+      "bus_id": "port_usb_rs485_0",
+      "model": "KS114",
+      "protocol_family": "modbus_rtu",
+      "protocol_profile": "ks114",
+      "station_id": "0xD0",
+      "role": "body_front_distance",
+      "poll_interval_ms": 150,
+      "response_deadline_ms": 120,
+      "max_consecutive_failures": 3,
+      "quarantine_duration_ms": 2000,
+      "read_retry_count": 1
+    },
+    "lidar_body_rear": {
+      "backend": "real",
+      "enabled": true,
+      "bus_id": "port_usb_rs485_0",
+      "model": "KS114",
+      "protocol_family": "modbus_rtu",
+      "protocol_profile": "ks114",
+      "station_id": "0xD2",
+      "role": "body_rear_distance",
+      "poll_interval_ms": 150,
+      "response_deadline_ms": 120,
+      "max_consecutive_failures": 3,
+      "quarantine_duration_ms": 2000,
+      "read_retry_count": 1
+    },
+
+    "anemometer_left": {
+      "backend": "real",
+      "enabled": true,
+      "bus_id": "port_usb_rs485_1",
+      "model": "YN8588B",
+      "protocol_family": "modbus_rtu",
+      "protocol_profile": "yn8588b",
+      "station_id": "0x31",
+      "role": "body_left_wind_speed",
+      "poll_interval_ms": 200,
+      "response_deadline_ms": 120,
+      "max_consecutive_failures": 3,
+      "quarantine_duration_ms": 2000,
+      "read_retry_count": 1
+    },
+    "anemometer_right": {
+      "backend": "real",
+      "enabled": true,
+      "bus_id": "port_usb_rs485_1",
+      "model": "YN8588B",
+      "protocol_family": "modbus_rtu",
+      "protocol_profile": "yn8588b",
+      "station_id": "0x32",
+      "role": "body_right_wind_speed",
+      "poll_interval_ms": 200,
+      "response_deadline_ms": 120,
+      "max_consecutive_failures": 3,
+      "quarantine_duration_ms": 2000,
+      "read_retry_count": 1
+    },
+    "wit_motion": {
+      "backend": "real",
+      "enabled": true,
+      "bus_id": "port_usb_rs485_1",
+      "model": "WTGAHRS02A",
+      "protocol_family": "modbus_rtu",
+      "protocol_profile": "wit_motion",
+      "station_id": "0x65",
+      "role": "body_attitude",
+      "poll_interval_ms": 200,
+      "response_deadline_ms": 120,
+      "max_consecutive_failures": 3,
+      "quarantine_duration_ms": 2000,
+      "read_retry_count": 1
+    },
+
+    "temperature_cabinet": {
+      "backend": "real",
+      "enabled": true,
+      "bus_id": "port_rs485_3",
+      "model": "temperature_humidity_module",
+      "protocol_family": "modbus_rtu",
+      "protocol_profile": "temperature_humidity",
+      "station_id": "0x33",
+      "role": "cabinet_environment",
+      "poll_interval_ms": 1000,
+      "response_deadline_ms": 1500,
+      "stale_after_ms": 5000,
+      "max_consecutive_failures": 3,
+      "quarantine_duration_ms": 2000,
+      "read_retry_count": 1
+    },
+    "power_24v": {
+      "backend": "real",
+      "enabled": true,
+      "bus_id": "port_rs485_3",
+      "model": "24V 3000W",
+      "protocol_family": "modbus_rtu",
+      "protocol_profile": "pds3000",
+      "station_id": "0x71",
+      "role": "equipment_power",
+      "poll_interval_ms": 1000,
+      "response_deadline_ms": 1500,
+      "max_consecutive_failures": 3,
+      "quarantine_duration_ms": 5000,
+      "stale_after_ms": 5000,
+      "read_retry_count": 1
+    },
+    "power_48v": {
+      "backend": "real",
+      "enabled": true,
+      "bus_id": "port_rs485_3",
+      "model": "48V 3000W",
+      "protocol_family": "modbus_rtu",
+      "protocol_profile": "pds3000",
+      "station_id": "0x72",
+      "role": "propulsion_fan_power",
+      "poll_interval_ms": 1000,
+      "response_deadline_ms": 1500,
+      "max_consecutive_failures": 3,
+      "quarantine_duration_ms": 5000,
+      "stale_after_ms": 5000,
+      "read_retry_count": 1
+    },
+
+    "relay_push_motor": {
+      "backend": "real",
+      "enabled": true,
+      "bus_id": "port_rs485_0",
+      "model": "ZS-DIO-R-10A-4-R-485",
+      "protocol_family": "modbus_rtu",
+      "protocol_profile": "zs_dio_r_4_relay",
+      "station_id": "0x43",
+      "channel_count": 4,
+      "role": "dual_push_motor_relay",
+      "response_deadline_ms": 200,
+      "max_consecutive_failures": 3,
+      "quarantine_duration_ms": 2000,
+      "read_retry_count": 1
+    },
+    "brush_motor": {
+      "backend": "real",
+      "enabled": true,
+      "bus_id": "port_rs485_0",
+      "model": "BD-201S",
+      "protocol_family": "modbus_rtu",
+      "protocol_profile": "bd_201s",
+      "station_id": "0x03",
+      "role": "brush_roller",
+      "response_deadline_ms": 200,
+      "max_consecutive_failures": 3,
+      "quarantine_duration_ms": 2000,
+      "read_retry_count": 1 
+    },
+    "climber": {
+      "backend": "real",
+      "enabled": true,
+      "bus_id": "port_rs485_0",
+      "model": "L7P",
+      "protocol_family": "modbus_rtu",
+      "protocol_profile": "l7p_speed_mode",
+      "station_id": "0x02",
+      "role": "rope_climber",
+      "response_deadline_ms": 300,
+      "max_consecutive_failures": 3,
+      "quarantine_duration_ms": 2000,
+      "read_retry_count": 1
+    },
+
+    "propulsion_fan": {
+      "backend": "real",
+      "enabled": true,
+      "bus_id": "port_can_0",
+      "model": "X6 Plus",
+      "protocol_family": "hobbywing_uavcan",
+      "protocol_profile": "x6_plus_raw_command",
+      "source_node_id": "0x64",
+      "left_node_id": "0x01",
+      "right_node_id": "0x02",
+      "left_throttle_channel": 0,
+      "right_throttle_channel": 1,
+      "max_throttle_raw": 8191,
+      "role": "propulsion_fans",
+      "response_deadline_ms": 20,
+      "max_consecutive_failures": 3,
+      "quarantine_duration_ms": 2000
+    }
+  },
+
+  "relay_outputs": {
+    "brush_push_extend": {
+      "controller_id": "relay_push_motor",
+      "physical_channel": 1
+    },
+    "brush_push_retract": {
+      "controller_id": "relay_push_motor",
+      "physical_channel": 2
+    },
+    "scraper_push_extend": {
+      "controller_id": "relay_push_motor",
+      "physical_channel": 3
+    },
+    "scraper_push_retract": {
+      "controller_id": "relay_push_motor",
+      "physical_channel": 4
+    }
+  },
+
+  "safety": {
+    "g20_lease_timeout_ms": 750,
+    "g20_loss_confirm_ms": 8000,
+    "g20_route_loss_confirm_ms": 6000,
+    "sensor_stale_timeout_ms": 1000,
+    "rs485_retry_count": 1,
+    "push_motor_dead_time_ms": 200,
+    "push_motor_max_on_time_ms": 10000,
+    "brush_push_motor_max_on_time_ms": 9100,
+    "scraper_push_motor_max_on_time_ms": 10000,
+    "safe_stop_on_g20_loss": true,
+    "safe_stop_on_rs485_bus_fault": true,
+    "safe_stop_on_can_bus_fault": false,
+    "safe_stop_on_sensor_stale": true,
+    "allow_remote_fault_clear": true,
+    "required_samples": []
+  },
+
+  "links": {
+    "g20_udp": {
+      "backend": "udp",
+      "role": "primary_control",
+      "listen_address": "0.0.0.0",
+      "listen_port": 14550,
+      "command_listen_port": 14550,
+      "status_publish_port": 14551,
+      "telemetry_publish_port": 14552,
+      "remote_address": "192.168.144.255",
+      "remote_port": null,
+      "heartbeat_ms": 250,
+      "lease_timeout_ms": 750
+    }
+  },
+
+  "gateway": {
+    "control_socket_path": "/run/snappy/control.sock",
+    "control_timeout_ms": 200,
+    "loop_period_ms": 20,
+    "status_period_ms": 250,
+    "telemetry_period_ms": 100,
+    "telemetry_enabled": true
+  },
+
+  "video": {
+    "path": "rk_usb_camera_dual_rtp_udp_to_g20_android",
+    "target_address": "192.168.144.11",
+    "camera1_device": "/dev/video81",
+    "camera2_device": "/dev/video82",
+    "camera1_udp_port": 5600,
+    "camera2_udp_port": 5600,
+    "camera1_play_url": "udp://@:5600",
+    "camera2_play_url": "udp://@:5600",
+    "width": 640,
+    "height": 480,
+    "fps": 30,
+    "bps": 1500000,
+    "gop": 15,
+    "qp_init": 24,
+    "auto_start_when_target_known": false
+  },
+
+  "watchdog": {
+    "enabled": true,
+    "device_path": "/dev/watchdog",
+    "timeout_sec": 30,
+    "feed_interval_ms": 10000,
+    "stop_on_clean_shutdown": true,
+    "fail_if_unavailable": false
+  }
+}

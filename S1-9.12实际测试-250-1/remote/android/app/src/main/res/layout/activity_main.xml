@@ -1,0 +1,440 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/snappy_background">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <LinearLayout
+            android:id="@+id/topBar"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:background="@color/snappy_panel_bg"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp">
+
+            <TextView
+                android:id="@+id/tvAppTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:includeFontPadding="false"
+                android:singleLine="true"
+                android:text="@string/k2_cleaning_program"
+                android:textColor="@color/snappy_text_primary"
+                android:textSize="22sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/btnAcquire"
+                android:layout_width="82dp"
+                android:layout_height="38dp"
+                android:text="控制权"
+                android:textSize="13sp" />
+
+            <Button
+                android:id="@+id/btnFaultClear"
+                android:layout_width="92dp"
+                android:layout_height="38dp"
+                android:layout_marginStart="6dp"
+                android:text="清除故障"
+                android:textSize="13sp" />
+
+            <Button
+                android:id="@+id/btnSafeHold"
+                android:layout_width="92dp"
+                android:layout_height="38dp"
+                android:layout_marginStart="6dp"
+                android:backgroundTint="@color/snappy_danger"
+                android:text="安全停止"
+                android:textColor="@color/snappy_text_primary"
+                android:textSize="13sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="8dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/leftPane"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:paddingEnd="10dp">
+
+                <FrameLayout
+                    android:id="@+id/videoWindow"
+                    android:layout_width="match_parent"
+                    android:layout_height="245dp"
+                    android:background="@color/snappy_video_bg">
+
+                    <View
+                        android:id="@+id/fpvWidget"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/snappy_video_bg" />
+
+                    <TextView
+                        android:id="@+id/tvCameraLabel"
+                        android:layout_width="68dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="start|top"
+                        android:background="@color/snappy_panel_bg"
+                        android:gravity="center"
+                        android:includeFontPadding="false"
+                        android:singleLine="true"
+                        android:text="camera1"
+                        android:textColor="@color/snappy_text_primary"
+                        android:textSize="10sp" />
+                </FrameLayout>
+
+                <ScrollView
+                    android:id="@+id/sensorScroll"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_weight="1"
+                    android:background="@color/snappy_panel_bg_soft"
+                    android:fillViewport="true"
+                    android:scrollbars="vertical">
+
+                    <TextView
+                        android:id="@+id/tvSensorData"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="monospace"
+                        android:gravity="start|top"
+                        android:includeFontPadding="false"
+                        android:lineSpacingExtra="1dp"
+                        android:padding="10dp"
+                        android:text="测距&#10;毛刷左：      毛刷右：      机身左：      机身右：&#10;风速&#10;机身左：      机身右：&#10;配电柜&#10;温度：      湿度：&#10;电源温度：&#10;24V电源：      48V电源：&#10;姿态角&#10;横滚角：      俯仰角：      航向角："
+                        android:textColor="@color/snappy_text_primary"
+                        android:textSize="14sp" />
+                </ScrollView>
+            </LinearLayout>
+
+            <ScrollView
+                android:id="@+id/rightPane"
+                android:layout_width="250dp"
+                android:layout_height="match_parent"
+                android:background="@color/snappy_panel_bg"
+                android:fillViewport="true"
+                android:scrollbars="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="8dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/btnBrushForward"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="毛刷正转"
+                            android:textSize="13sp" />
+
+                        <Button
+                            android:id="@+id/btnBrushReverse"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="6dp"
+                            android:layout_weight="1"
+                            android:text="毛刷反转"
+                            android:textSize="13sp" />
+                    </LinearLayout>
+
+                    <Button
+                        android:id="@+id/btnBrushStop"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginTop="6dp"
+                        android:text="毛刷停止"
+                        android:textSize="13sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/btnBrushPushExtend"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="毛刷推杆伸"
+                            android:textSize="12sp" />
+
+                        <Button
+                            android:id="@+id/btnBrushPushRetract"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="6dp"
+                            android:layout_weight="1"
+                            android:text="毛刷推杆缩"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="36dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <SeekBar
+                            android:id="@+id/seekBrushPushDistance"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:max="300"
+                            android:progress="0" />
+
+                        <TextView
+                            android:id="@+id/tvBrushPushDistanceValue"
+                            android:layout_width="92dp"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:singleLine="true"
+                            android:text="0mm/0mm"
+                            android:textColor="@color/snappy_text_primary"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="36dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <SeekBar
+                            android:id="@+id/seekBrushPushSeconds"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:max="10"
+                            android:progress="0" />
+
+                        <TextView
+                            android:id="@+id/tvBrushPushSecondsValue"
+                            android:layout_width="58dp"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:text="0 s"
+                            android:textColor="@color/snappy_text_primary"
+                            android:textSize="13sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <Button
+                        android:id="@+id/btnBrushPushStop"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginTop="4dp"
+                        android:text="毛刷推杆停止"
+                        android:textSize="13sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/btnScraperPushExtend"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="刮条推杆伸"
+                            android:textSize="12sp" />
+
+                        <Button
+                            android:id="@+id/btnScraperPushRetract"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="6dp"
+                            android:layout_weight="1"
+                            android:text="刮条推杆缩"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="36dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <SeekBar
+                            android:id="@+id/seekScraperPushDistance"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:max="300"
+                            android:progress="0" />
+
+                        <TextView
+                            android:id="@+id/tvScraperPushDistanceValue"
+                            android:layout_width="92dp"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:singleLine="true"
+                            android:text="0mm/0mm"
+                            android:textColor="@color/snappy_text_primary"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="36dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <SeekBar
+                            android:id="@+id/seekScraperPushSeconds"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:max="10"
+                            android:progress="0" />
+
+                        <TextView
+                            android:id="@+id/tvScraperPushSecondsValue"
+                            android:layout_width="58dp"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:text="0 s"
+                            android:textColor="@color/snappy_text_primary"
+                            android:textSize="13sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <Button
+                        android:id="@+id/btnScraperPushStop"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginTop="4dp"
+                        android:text="刮条推杆停止"
+                        android:textSize="13sp" />
+
+                    <Button
+                        android:id="@+id/btnFanStart"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginTop="10dp"
+                        android:text="风机启动"
+                        android:textSize="13sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <SeekBar
+                            android:id="@+id/seekFanSpeed"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:max="21"
+                            android:progress="0" />
+
+                        <TextView
+                            android:id="@+id/tvFanSpeedValue"
+                            android:layout_width="50dp"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:text="0"
+                            android:textColor="@color/snappy_text_primary"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <Button
+                        android:id="@+id/btnFanStop"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:text="风机停止"
+                        android:textSize="13sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/btnClimberAscend"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="爬绳器上升"
+                            android:textSize="12sp" />
+
+                        <Button
+                            android:id="@+id/btnClimberDescend"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="6dp"
+                            android:layout_weight="1"
+                            android:text="爬绳器下降"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <SeekBar
+                            android:id="@+id/seekClimberSpeed"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:max="25"
+                            android:progress="0" />
+
+                        <TextView
+                            android:id="@+id/tvClimberSpeedValue"
+                            android:layout_width="50dp"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:text="0"
+                            android:textColor="@color/snappy_text_primary"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <Button
+                        android:id="@+id/btnClimberStop"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:text="爬绳器停止"
+                        android:textSize="13sp" />
+                </LinearLayout>
+            </ScrollView>
+        </LinearLayout>
+    </LinearLayout>
+</FrameLayout>

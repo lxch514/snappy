@@ -1,0 +1,20 @@
+# ============================================================
+# @file snappy-packet-capture.service
+# @brief 网络与 CAN 抓包取证
+#
+# 一次性服务，默认不启用；抓包范围由 SNAPPY_CAPTURE_* 控制。
+# 现场排查串口与网络异常时手动启动。
+# ============================================================
+
+[Unit]
+Description=Periodic Snappy log cleanup
+
+[Timer]
+OnBootSec=2min
+OnUnitActiveSec=12h
+Persistent=true
+AccuracySec=1min
+Unit=snappy-log-cleanup.service
+
+[Install]
+WantedBy=timers.target

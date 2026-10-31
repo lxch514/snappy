@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://snappy.local/contracts/v1/telemetry.schema.json",
+  "title": "Snappy v1 telemetry",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "kind", "robot_id", "boot_id", "seq", "emitted_at_ms", "samples"],
+  "properties": {
+    "schema_version": {"type": "integer", "const": 1},
+    "kind": {"type": "string", "const": "telemetry"},
+    "robot_id": {"type": "string", "minLength": 1, "maxLength": 64},
+    "boot_id": {"type": "string", "minLength": 1, "maxLength": 128},
+    "seq": {"type": "integer", "minimum": 0},
+    "emitted_at_ms": {"type": "integer", "minimum": 0},
+    "samples": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "value", "unit", "quality", "age_ms"],
+        "properties": {
+          "name": {"type": "string", "minLength": 1},
+          "value": {"type": ["number", "null"]},
+          "unit": {"type": "string"},
+          "quality": {"type": "string", "enum": ["GOOD", "STALE", "INVALID", "UNKNOWN"]},
+          "age_ms": {"type": "integer", "minimum": 0}
+        },
+        "additionalProperties": false
+      }
+    }
+  }
+}

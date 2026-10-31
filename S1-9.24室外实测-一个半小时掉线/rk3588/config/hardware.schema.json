@@ -1,0 +1,741 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "snappy/hardware.schema.json",
+  "title": "Snappy RK3588 Hardware Configuration",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "template_scope",
+    "robot_id",
+    "can_buses",
+    "rs485_ports",
+    "devices",
+    "relay_outputs",
+    "safety",
+    "links",
+    "gateway",
+    "video",
+    "watchdog"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "template_scope": {
+      "const": "snappy_real"
+    },
+    "robot_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "bringup": {
+      "$ref": "#/$defs/bringup"
+    },
+    "can_buses": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/$defs/can_bus"
+      }
+    },
+    "rs485_ports": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/$defs/rs485_port"
+      }
+    },
+    "devices": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "lidar_brush_left",
+        "lidar_brush_right",
+        "lidar_body_front",
+        "lidar_body_rear",
+        "anemometer_left",
+        "anemometer_right",
+        "wit_motion",
+        "temperature_cabinet",
+        "power_24v",
+        "power_48v",
+        "relay_push_motor",
+        "brush_motor",
+        "climber",
+        "propulsion_fan"
+      ],
+      "properties": {
+        "lidar_brush_left": {
+          "$ref": "#/$defs/device"
+        },
+        "lidar_brush_right": {
+          "$ref": "#/$defs/device"
+        },
+        "lidar_body_front": {
+          "$ref": "#/$defs/device"
+        },
+        "lidar_body_rear": {
+          "$ref": "#/$defs/device"
+        },
+        "anemometer_left": {
+          "$ref": "#/$defs/device"
+        },
+        "anemometer_right": {
+          "$ref": "#/$defs/device"
+        },
+        "wit_motion": {
+          "$ref": "#/$defs/device"
+        },
+        "temperature_cabinet": {
+          "$ref": "#/$defs/device"
+        },
+        "power_24v": {
+          "$ref": "#/$defs/device"
+        },
+        "power_48v": {
+          "$ref": "#/$defs/device"
+        },
+        "relay_push_motor": {
+          "$ref": "#/$defs/device"
+        },
+        "brush_motor": {
+          "$ref": "#/$defs/device"
+        },
+        "climber": {
+          "$ref": "#/$defs/device"
+        },
+        "propulsion_fan": {
+          "$ref": "#/$defs/device"
+        }
+      }
+    },
+    "relay_outputs": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "brush_push_extend",
+        "brush_push_retract",
+        "scraper_push_extend",
+        "scraper_push_retract"
+      ],
+      "properties": {
+        "brush_push_extend": {
+          "$ref": "#/$defs/relay_output"
+        },
+        "brush_push_retract": {
+          "$ref": "#/$defs/relay_output"
+        },
+        "scraper_push_extend": {
+          "$ref": "#/$defs/relay_output"
+        },
+        "scraper_push_retract": {
+          "$ref": "#/$defs/relay_output"
+        }
+      }
+    },
+    "safety": {
+      "$ref": "#/$defs/safety"
+    },
+    "links": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "g20_udp": {
+          "$ref": "#/$defs/g20_link"
+        }
+      }
+    },
+    "gateway": {
+      "$ref": "#/$defs/gateway"
+    },
+    "video": {
+      "$ref": "#/$defs/video"
+    },
+    "watchdog": {
+      "$ref": "#/$defs/watchdog"
+    }
+  },
+  "$defs": {
+    "bringup": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "mode": {
+          "type": "string",
+          "enum": [
+            "production",
+            "commissioning",
+            "bringup",
+            "debug",
+            "permissive_debug"
+          ]
+        },
+        "allow_partial_devices": {
+          "type": "boolean"
+        },
+        "noop_missing_actuators": {
+          "type": "boolean"
+        },
+        "ignore_device_startup_failures": {
+          "type": "boolean"
+        },
+        "quarantine_failed_devices": {
+          "type": "boolean"
+        },
+        "quarantine_after_failures": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "quarantine_duration_ms": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "arm_requires_all_required_devices": {
+          "type": "boolean"
+        }
+      }
+    },
+    "can_bus": {
+      "type": "object",
+      "required": [
+        "interface_name",
+        "bitrate"
+      ],
+      "additionalProperties": true,
+      "properties": {
+        "backend": {
+          "type": "string",
+          "minLength": 1
+        },
+        "interface_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "bitrate": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "bitrate_bps": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "tx_queue_length": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "auto_configure_interface": {
+          "type": "boolean"
+        },
+        "restart_on_bus_off": {
+          "type": "boolean"
+        },
+        "restart_ms": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "receive_own_messages": {
+          "type": "boolean"
+        },
+        "default_tx_timeout_ms": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "default_rx_timeout_ms": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "allow_start_failure": {
+          "type": "boolean"
+        }
+      }
+    },
+    "rs485_port": {
+      "type": "object",
+      "required": [
+        "device_path",
+        "baud_rate"
+      ],
+      "additionalProperties": true,
+      "properties": {
+        "backend": {
+          "type": "string",
+          "minLength": 1
+        },
+        "device_path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "baud_rate": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "data_bits": {
+          "type": "integer",
+          "minimum": 5,
+          "maximum": 8
+        },
+        "parity": {
+          "type": "string",
+          "enum": [
+            "none",
+            "even",
+            "odd"
+          ]
+        },
+        "stop_bits": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 2
+        },
+        "inter_frame_gap_ms": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "read_idle_gap_ms": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "late_frame_silence_ms": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "late_frame_recovery_timeout_ms": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "low_latency": {
+          "type": "boolean"
+        },
+        "shared_lock_group": {
+          "type": "string"
+        },
+        "shared_transaction_group": {
+          "type": "string"
+        },
+        "rs485_direction_mode": {
+          "type": "string",
+          "enum": [
+            "AUTO",
+            "auto",
+            "NONE",
+            "none",
+            "DISABLED",
+            "disabled",
+            "KERNEL_RTS_HIGH_ON_SEND",
+            "kernel_rts_high_on_send",
+            "RTS_HIGH_ON_SEND",
+            "rts_high_on_send",
+            "KERNEL_RTS_LOW_ON_SEND",
+            "kernel_rts_low_on_send",
+            "RTS_LOW_ON_SEND",
+            "rts_low_on_send"
+          ]
+        },
+        "max_pending_transactions": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "recovery_delay_ms": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "device": {
+      "type": "object",
+      "required": [
+        "backend",
+        "enabled",
+        "bus_id",
+        "model",
+        "protocol_family",
+        "protocol_profile"
+      ],
+      "additionalProperties": true,
+      "properties": {
+        "backend": {
+          "type": "string",
+          "minLength": 1
+        },
+        "enabled": {
+          "type": "boolean"
+        },
+        "bus_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "model": {
+          "type": "string",
+          "minLength": 1
+        },
+        "protocol_family": {
+          "type": "string",
+          "minLength": 1
+        },
+        "protocol_profile": {
+          "type": "string",
+          "minLength": 1
+        },
+        "station_id": {
+          "type": [
+            "integer",
+            "string"
+          ],
+          "minimum": 0,
+          "maximum": 255
+        },
+        "source_node_id": {
+          "type": [
+            "integer",
+            "string"
+          ],
+          "minimum": 0,
+          "maximum": 255
+        },
+        "left_node_id": {
+          "type": [
+            "integer",
+            "string"
+          ],
+          "minimum": 0,
+          "maximum": 255
+        },
+        "right_node_id": {
+          "type": [
+            "integer",
+            "string"
+          ],
+          "minimum": 0,
+          "maximum": 255
+        },
+        "left_throttle_channel": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "right_throttle_channel": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "max_throttle_raw": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535
+        },
+        "channel_count": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 65535
+        },
+        "tx_can_id": {
+          "type": [
+            "integer",
+            "string"
+          ],
+          "minimum": 0
+        },
+        "rx_can_id": {
+          "type": [
+            "integer",
+            "string"
+          ],
+          "minimum": 0
+        },
+        "can_extended": {
+          "type": "boolean"
+        },
+        "role": {
+          "type": "string"
+        },
+        "poll_interval_ms": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "response_deadline_ms": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "stale_after_ms": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "priority": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "max_consecutive_failures": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "quarantine_duration_ms": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "read_retry_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "startup_required": {
+          "type": "boolean"
+        },
+        "cache_failures": {
+          "type": "boolean"
+        }
+      }
+    },
+    "relay_output": {
+      "type": "object",
+      "required": [
+        "controller_id",
+        "physical_channel"
+      ],
+      "additionalProperties": true,
+      "properties": {
+        "controller_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "physical_channel": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 65535
+        }
+      }
+    },
+    "safety": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "g20_lease_timeout_ms": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "sensor_stale_timeout_ms": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "rs485_retry_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "required_samples": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "push_motor_dead_time_ms": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "push_motor_max_on_time_ms": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "brush_push_motor_max_on_time_ms": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "scraper_push_motor_max_on_time_ms": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "safe_stop_on_g20_loss": {
+          "type": "boolean"
+        },
+        "safe_stop_on_rs485_bus_fault": {
+          "type": "boolean"
+        },
+        "safe_stop_on_can_bus_fault": {
+          "type": "boolean"
+        },
+        "safe_stop_on_sensor_stale": {
+          "type": "boolean"
+        },
+        "allow_remote_fault_clear": {
+          "type": "boolean"
+        }
+      }
+    },
+    "g20_link": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "backend": {
+          "type": "string"
+        },
+        "role": {
+          "type": "string"
+        },
+        "listen_address": {
+          "type": "string"
+        },
+        "listen_port": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 65535
+        },
+        "command_listen_port": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 65535
+        },
+        "status_publish_port": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 65535
+        },
+        "telemetry_publish_port": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 65535
+        },
+        "remote_address": {
+          "type": "string"
+        },
+        "remote_port": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1,
+          "maximum": 65535
+        },
+        "heartbeat_ms": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "lease_timeout_ms": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "gateway": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "control_socket_path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "control_timeout_ms": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "loop_period_ms": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "status_period_ms": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "telemetry_period_ms": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "telemetry_enabled": {
+          "type": "boolean"
+        }
+      }
+    },
+    "video": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "path": {
+          "type": "string"
+        },
+        "device": {
+          "type": "string"
+        },
+        "target_address": {
+          "type": "string"
+        },
+        "camera1_device": {
+          "type": "string"
+        },
+        "camera2_device": {
+          "type": "string"
+        },
+        "camera1_udp_port": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 65535
+        },
+        "camera2_udp_port": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 65535
+        },
+        "camera1_play_url": {
+          "type": "string"
+        },
+        "camera2_play_url": {
+          "type": "string"
+        },
+        "width": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "height": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "fps": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "bps": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "gop": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "qp_init": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "auto_start_when_target_known": {
+          "type": "boolean"
+        },
+        "cloud_export": {
+          "type": "boolean"
+        },
+        "force_usb_host_mode": {
+          "type": "boolean"
+        }
+      }
+    },
+    "watchdog": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "device_path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "timeout_sec": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "feed_interval_ms": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "stop_on_clean_shutdown": {
+          "type": "boolean"
+        },
+        "fail_if_unavailable": {
+          "type": "boolean"
+        }
+      }
+    }
+  }
+}

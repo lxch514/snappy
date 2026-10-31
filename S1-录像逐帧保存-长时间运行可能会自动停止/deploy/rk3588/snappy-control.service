@@ -1,0 +1,68 @@
+# ============================================================
+# @file snappy-control.service
+# @brief RK3588 控制进程开机自启动
+# ============================================================
+
+[Unit]
+Description=Snappy RK3588 Control
+After=local-fs.target
+Before=snappy-gateway.service
+StartLimitIntervalSec=120
+StartLimitBurst=20
+
+[Service]
+Type=simple
+
+User=root
+Group=root
+
+WorkingDirectory=/root/snappy
+
+Environment=SNAPPY_SERVICE_NAME=snappy-control.service
+Environment=SNAPPY_ROOT=/root/snappy
+Environment=SNAPPY_CONFIG=/root/snappy/snappy-snappy/config/hardware.debug.actuator-only.json
+Environment=SNAPPY_WATCHDOG_DISABLE=0
+Environment=SNAPPY_LOG_DIR=/root/var/log/snappy
+Environment=SNAPPY_LOG_LEVEL=info
+Environment=SNAPPY_PACKET_TRACE=0
+
+ExecStartPre=-/bin/mkdir -p /run/snappy
+ExecStartPre=-/bin/mkdir -p /root/var/log/snappy
+ExecStartPre=-/bin/mkdir -p /root/var/log/snappy/diagnostics
+ExecStartPre=-/bin/mkdir -p /root/var/log/snappy/captures
+
+# USB控制器切换为Host模式
+ExecStartPre=-/bin/chmod +x /root/snappy/tools/snappy_usb_host_mode.sh
+ExecStartPre=-/root/snappy/tools/snappy_usb_host_mode.sh host
+
+# 等待USB设备枚举完成
+ExecStartPre=/bin/sh -c 'command -v udevadm >/dev/null 2>&1 && udevadm settle --timeout=10 || true'
+
+# 当前 actuator-only 配置实际使用 ttyACM2
+ExecStartPre=/bin/sh -c 'for i in $(seq 1 30); do if [ -e /dev/ttyACM2 ]; then echo "ttyACM2 ready"; exit 0; fi; echo "waiting for ttyACM2... $i/30"; sleep 1; done; echo "ERROR: /dev/ttyACM2 not found"; exit 1'
+
+# USB串口出现后再给驱动一点稳定时间
+ExecStartPre=/bin/sleep 3
+
+# 清理旧socket
+ExecStartPre=-/bin/rm -f /run/snappy/control.sock
+
+ExecStart=/root/snappy/build/snappy-snappy/snappy-snappy-control \
+  --config ${SNAPPY_CONFIG} \
+  --socket /run/snappy/control.sock
+
+Restart=always
+RestartSec=3
+
+KillSignal=SIGINT
+KillMode=control-group
+
+TimeoutStartSec=60
+TimeoutStopSec=12
+
+StandardInput=null
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

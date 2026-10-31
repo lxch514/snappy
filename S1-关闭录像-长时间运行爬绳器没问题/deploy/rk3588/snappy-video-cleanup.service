@@ -1,0 +1,9 @@
+
+[Unit]
+Description=Clean Snappy video recordings older than 3 days
+
+[Service]
+Type=oneshot
+Environment=SNAPPY_VIDEO_KEEP=1
+ExecStart=/root/snappy/tools/snappy-video-cleanup.sh
+

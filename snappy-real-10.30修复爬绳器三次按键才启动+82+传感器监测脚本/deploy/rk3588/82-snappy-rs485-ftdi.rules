@@ -1,0 +1,19 @@
+# 给 FTDI FT4232H（0403:6011）四路 USB 转串口按 USB 接口号建立稳定设备名，
+# 名字与 CH344（1a86:55d5）完全一致，因此 /dev/snappy/rs485_0..3 与
+#   ·用的是哪一颗模块（CH344 还是 FT4232H）
+#   ·插在哪个 USB 口都无关，插上即可用。
+# 本文件与 70-snappy-rs485.rules 是并存关系（70 管 ACM 系、本文件管 USB 系），不是替代关系。
+# 匹配用 udev 已算好的 ENV{ID_VENDOR_ID}/ENV{ID_MODEL_ID}/ENV{ID_USB_INTERFACE_NUM}；
+# 不要改成 ATTRS{idVendor}+ATTRS{idProduct}+ATTRS{bInterfaceNumber} 组合匹配（跨两层会被静默忽略）。
+# 文件名 82- 必须晚于 80-mm-candidate.rules，否则清不掉它打的 ID_MM_CANDIDATE。
+# 安装：cp 本文件到 /etc/udev/rules.d/ 后执行 udevadm control --reload-rules。
+
+# 稳定名：FT4232H 通道 A/B/C/D 对应接口号 00/01/02/03
+SUBSYSTEM=="tty", KERNEL=="ttyUSB*", ENV{ID_VENDOR_ID}=="0403", ENV{ID_MODEL_ID}=="6011", ENV{ID_USB_INTERFACE_NUM}=="00", GROUP="dialout", MODE="0660", SYMLINK+="snappy/rs485_0"
+SUBSYSTEM=="tty", KERNEL=="ttyUSB*", ENV{ID_VENDOR_ID}=="0403", ENV{ID_MODEL_ID}=="6011", ENV{ID_USB_INTERFACE_NUM}=="01", GROUP="dialout", MODE="0660", SYMLINK+="snappy/rs485_1"
+SUBSYSTEM=="tty", KERNEL=="ttyUSB*", ENV{ID_VENDOR_ID}=="0403", ENV{ID_MODEL_ID}=="6011", ENV{ID_USB_INTERFACE_NUM}=="02", GROUP="dialout", MODE="0660", SYMLINK+="snappy/rs485_2"
+SUBSYSTEM=="tty", KERNEL=="ttyUSB*", ENV{ID_VENDOR_ID}=="0403", ENV{ID_MODEL_ID}=="6011", ENV{ID_USB_INTERFACE_NUM}=="03", GROUP="dialout", MODE="0660", SYMLINK+="snappy/rs485_3"
+
+# 屏蔽 ModemManager 抢占：ttyUSB 同样在它 generic 探测范围内，会打开端口试 AT、改走速率且关闭后不回滚参数。
+SUBSYSTEM=="tty", KERNEL=="ttyUSB*", ENV{ID_VENDOR_ID}=="0403", ENV{ID_MODEL_ID}=="6011", ENV{ID_MM_DEVICE_IGNORE}="1", ENV{ID_MM_PORT_IGNORE}="1"
+SUBSYSTEM=="tty", KERNEL=="ttyUSB*", ENV{ID_VENDOR_ID}=="0403", ENV{ID_MODEL_ID}=="6011", ENV{ID_MM_CANDIDATE}=""

@@ -1,0 +1,8 @@
+{
+  "cases": [
+    {"file": "command.valid.json", "schema": "command.schema.json", "valid": true},
+    {"file": "command.invalid.missing-message-id.json", "schema": "command.schema.json", "valid": false},
+    {"file": "ack.valid.json", "schema": "ack.schema.json", "valid": true},
+    {"file": "state.valid.json", "schema": "state.schema.json", "valid": true}
+  ]
+}

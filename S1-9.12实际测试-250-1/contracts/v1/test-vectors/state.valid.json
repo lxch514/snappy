@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "kind": "state",
+  "robot_id": "snappy-001",
+  "boot_id": "boot-0001",
+  "seq": 9,
+  "emitted_at_ms": 1200,
+  "desired": {"control_state": "DISARMED"},
+  "actual": {"control_state": "DISARMED"},
+  "quality": "GOOD",
+  "age_ms": 0,
+  "link_health": {
+    "g20_udp": "UP",
+    "ec20_mqtt": "DOWN"
+  }
+}

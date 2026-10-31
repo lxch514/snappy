@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://snappy.local/contracts/v1/presence.schema.json",
+  "title": "Snappy v1 presence",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "kind", "robot_id", "boot_id", "emitted_at_ms", "online", "reason"],
+  "properties": {
+    "schema_version": {"type": "integer", "const": 1},
+    "kind": {"type": "string", "const": "presence"},
+    "robot_id": {"type": "string", "minLength": 1, "maxLength": 64},
+    "boot_id": {"type": "string", "minLength": 1, "maxLength": 128},
+    "emitted_at_ms": {"type": "integer", "minimum": 0},
+    "online": {"type": "boolean"},
+    "reason": {"type": "string", "maxLength": 256}
+  }
+}

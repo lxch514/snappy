@@ -1,0 +1,12 @@
+# 屏蔽 ModemManager 抢占 WCH CH344 四路串口，并关闭 USB 运行时自动挂起。
+# 匹配方式与 70-snappy-rs485.rules 相同，用 udev 已算好的 ENV{ID_VENDOR_ID}/ENV{ID_MODEL_ID}。
+# 文件名 81- 必须晚于 80-mm-candidate.rules，否则清不掉它打的 ID_MM_CANDIDATE。
+# 安装：cp 本文件到 /etc/udev/rules.d/ 后执行 udevadm control --reload-rules。
+
+# ModemManager 会打开 ttyACM 探测 AT、改走串口速率且关闭后不回滚参数。
+SUBSYSTEM=="tty", KERNEL=="ttyACM*", ENV{ID_VENDOR_ID}=="1a86", ENV{ID_MODEL_ID}=="55d5", ENV{ID_MM_DEVICE_IGNORE}="1", ENV{ID_MM_PORT_IGNORE}="1"
+SUBSYSTEM=="tty", KERNEL=="ttyACM*", ENV{ID_VENDOR_ID}=="1a86", ENV{ID_MODEL_ID}=="55d5", ENV{ID_MM_CANDIDATE}=""
+
+# 运行时自动挂起会给 USB 链路额外增加挂起与复位路径，整机由市电供电，直接全局关闭。
+ACTION=="add", SUBSYSTEM=="usb", ENV{DEVTYPE}=="usb_device", TEST=="power/control", ATTR{power/control}="on"
+ACTION=="add", SUBSYSTEM=="usb", ENV{DEVTYPE}=="usb_device", TEST=="power/autosuspend", ATTR{power/autosuspend}="-1"

@@ -1,0 +1,8 @@
+# 给 WCH CH344（1a86:55d5）四路 USB 转串口按 USB 接口号建立稳定设备名，避免 /dev/ttyACM* 编号漂移。
+# 匹配用 udev 已算好的 ENV{ID_USB_INTERFACE_NUM}；不要改成 ATTRS{idVendor}+ATTRS{idProduct}+ATTRS{bInterfaceNumber} 组合匹配（跨 usb_device 与 usb_interface 两层，规则会被静默忽略）。
+# 安装：cp 本文件到 /etc/udev/rules.d/ 后执行 udevadm control --reload-rules。
+
+SUBSYSTEM=="tty", KERNEL=="ttyACM*", ENV{ID_VENDOR_ID}=="1a86", ENV{ID_MODEL_ID}=="55d5", ENV{ID_USB_INTERFACE_NUM}=="00", GROUP="dialout", MODE="0660", SYMLINK+="snappy/rs485_0"
+SUBSYSTEM=="tty", KERNEL=="ttyACM*", ENV{ID_VENDOR_ID}=="1a86", ENV{ID_MODEL_ID}=="55d5", ENV{ID_USB_INTERFACE_NUM}=="02", GROUP="dialout", MODE="0660", SYMLINK+="snappy/rs485_1"
+SUBSYSTEM=="tty", KERNEL=="ttyACM*", ENV{ID_VENDOR_ID}=="1a86", ENV{ID_MODEL_ID}=="55d5", ENV{ID_USB_INTERFACE_NUM}=="04", GROUP="dialout", MODE="0660", SYMLINK+="snappy/rs485_2"
+SUBSYSTEM=="tty", KERNEL=="ttyACM*", ENV{ID_VENDOR_ID}=="1a86", ENV{ID_MODEL_ID}=="55d5", ENV{ID_USB_INTERFACE_NUM}=="06", GROUP="dialout", MODE="0660", SYMLINK+="snappy/rs485_3"

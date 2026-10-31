@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="snappy_background">#FF090B0F</color>
+    <color name="snappy_video_bg">#FF000000</color>
+    <color name="snappy_panel_bg">#CC151A22</color>
+    <color name="snappy_panel_bg_soft">#66151A22</color>
+    <color name="snappy_text_primary">#FFFFFFFF</color>
+    <color name="snappy_text_muted">#FFD0D0D0</color>
+    <color name="snappy_danger">#FFE74C3C</color>
+    <color name="snappy_ok">#FF2ECC71</color>
+</resources>

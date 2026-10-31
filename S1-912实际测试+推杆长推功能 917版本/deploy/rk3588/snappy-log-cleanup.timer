@@ -1,0 +1,11 @@
+[Unit]
+Description=Daily Snappy log cleanup timer
+
+[Timer]
+OnCalendar=*-*-* 00:00:01
+Persistent=true
+AccuracySec=1min
+Unit=snappy-log-cleanup.service
+
+[Install]
+WantedBy=timers.target

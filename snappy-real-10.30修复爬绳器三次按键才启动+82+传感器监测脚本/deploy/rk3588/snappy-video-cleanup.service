@@ -1,0 +1,17 @@
+# ============================================================
+# @file snappy-video-cleanup.service
+# @brief 定期清理 snappy-real 历史视频录像
+#
+# 一次性服务，由定时器触发；保留天数由 SNAPPY_VIDEO_KEEP 控制。
+# ============================================================
+
+[Unit]
+Description=Clean Snappy video recordings older than 1 days
+
+[Service]
+Type=oneshot
+User=root
+Group=root
+Environment=SNAPPY_VIDEO_DIR=/root/var/video
+Environment=SNAPPY_VIDEO_KEEP=1
+ExecStart=/root/snappy-real/tools/snappy-video-cleanup.sh

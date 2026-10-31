@@ -1,0 +1,14 @@
+```ini
+[Unit]
+Description=Periodic Snappy video recording cleanup
+
+[Timer]
+OnBootSec=5min
+OnUnitActiveSec=6h
+Persistent=true
+AccuracySec=1min
+Unit=snappy-video-cleanup.service
+
+[Install]
+WantedBy=timers.target
+

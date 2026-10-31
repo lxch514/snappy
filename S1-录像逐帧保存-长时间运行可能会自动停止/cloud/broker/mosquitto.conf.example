@@ -1,0 +1,19 @@
+# Skeleton only: replace all certificate/password paths during deployment.
+per_listener_settings true
+listener 8883
+protocol mqtt
+allow_anonymous false
+
+password_file /etc/snappy/mosquitto/passwords
+acl_file /etc/snappy/mosquitto/acl
+cafile /etc/snappy/mosquitto/tls/ca.crt
+certfile /etc/snappy/mosquitto/tls/server.crt
+keyfile /etc/snappy/mosquitto/tls/server.key
+require_certificate true
+tls_version tlsv1.2
+
+persistence true
+persistence_location /var/lib/mosquitto/
+
+# v1 commands are QoS 1 and retain=false. Device/cloud clients must use clean
+# sessions with zero session expiry so commands are never delivered after reconnect.

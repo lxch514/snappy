@@ -1,0 +1,45 @@
+/.claude/
+/exa/
+/WORKLOG.md
+/AGENT.md
+
+/build/
+/.cache/
+
+# CMake build
+build/
+cmake-build-*/
+
+# 编译文件
+*.o
+*.a
+*.so
+*.so.*
+
+# 可执行文件
+*.out
+*.exe
+
+# 日志
+*.log
+
+# 临时文件
+*.tmp
+*.swp
+
+# VSCode
+.vscode/
+
+# CMake缓存
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile**/__pycache__/
+*.py[cod]
+*.db
+*.db-shm
+*.db-wal
+*.jar
+*.class
+.gradle/
+local.properties

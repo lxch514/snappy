@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://snappy.local/contracts/v1/state.schema.json",
+  "title": "Snappy v1 state",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "kind", "robot_id", "boot_id", "seq",
+    "emitted_at_ms", "desired", "actual", "quality", "age_ms", "link_health"
+  ],
+  "properties": {
+    "schema_version": {"type": "integer", "const": 1},
+    "kind": {"type": "string", "const": "state"},
+    "robot_id": {"type": "string", "minLength": 1, "maxLength": 64},
+    "boot_id": {"type": "string", "minLength": 1, "maxLength": 128},
+    "seq": {"type": "integer", "minimum": 0},
+    "emitted_at_ms": {"type": "integer", "minimum": 0},
+    "desired": {"type": "object"},
+    "actual": {"type": "object"},
+    "quality": {"type": "string", "enum": ["GOOD", "STALE", "INVALID", "UNKNOWN"]},
+    "age_ms": {"type": "integer", "minimum": 0},
+    "link_health": {
+      "type": "object",
+      "required": ["g20_udp", "ec20_mqtt"],
+      "properties": {
+        "g20_udp": {"type": "string", "enum": ["UP", "DEGRADED", "DOWN", "UNKNOWN"]},
+        "ec20_mqtt": {"type": "string", "enum": ["UP", "DEGRADED", "DOWN", "UNKNOWN"]}
+      },
+      "additionalProperties": false
+    }
+  }
+}

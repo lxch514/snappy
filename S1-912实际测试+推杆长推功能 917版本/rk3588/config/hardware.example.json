@@ -1,0 +1,190 @@
+{
+  "schema_version": 1,
+  "template_scope": "fake_only",
+  "robot_id": "snappy-001",
+  "can_buses": {},
+  "rs485_ports": {},
+  "devices": {
+    "propulsion_fan_left": {
+      "backend": "fake",
+      "enabled": true,
+      "bus_id": null,
+      "model": null,
+      "protocol_family": null,
+      "protocol_profile": null,
+      "can_id": null,
+      "throttle_channel": null
+    },
+    "propulsion_fan_right": {
+      "backend": "fake",
+      "enabled": true,
+      "bus_id": null,
+      "model": null,
+      "protocol_family": null,
+      "protocol_profile": null,
+      "can_id": null,
+      "throttle_channel": null
+    },
+    "rope_climber": {
+      "backend": "fake",
+      "enabled": true,
+      "bus_id": null,
+      "model": null,
+      "protocol_family": null,
+      "protocol_profile": null,
+      "can_id": null
+    },
+    "brush_roller": {
+      "backend": "fake",
+      "enabled": true,
+      "bus_id": null,
+      "model": null,
+      "protocol_family": null,
+      "protocol_profile": null,
+      "station_id": null
+    },
+    "relay_controller": {
+      "backend": "fake",
+      "enabled": true,
+      "bus_id": null,
+      "model": null,
+      "protocol_family": null,
+      "protocol_profile": null,
+      "station_id": null
+    },
+    "ultrasonic_front": {
+      "backend": "fake",
+      "enabled": true,
+      "bus_id": null,
+      "model": null,
+      "protocol_family": null,
+      "protocol_profile": null,
+      "station_id": null
+    },
+    "ultrasonic_rear": {
+      "backend": "fake",
+      "enabled": true,
+      "bus_id": null,
+      "model": null,
+      "protocol_family": null,
+      "protocol_profile": null,
+      "station_id": null
+    },
+    "ultrasonic_brush_left": {
+      "backend": "fake",
+      "enabled": true,
+      "bus_id": null,
+      "model": null,
+      "protocol_family": null,
+      "protocol_profile": null,
+      "station_id": null
+    },
+    "ultrasonic_brush_right": {
+      "backend": "fake",
+      "enabled": true,
+      "bus_id": null,
+      "model": null,
+      "protocol_family": null,
+      "protocol_profile": null,
+      "station_id": null
+    },
+    "ultrasonic_side_left": {
+      "backend": "fake",
+      "enabled": true,
+      "bus_id": null,
+      "model": null,
+      "protocol_family": null,
+      "protocol_profile": null,
+      "station_id": null
+    },
+    "ultrasonic_side_right": {
+      "backend": "fake",
+      "enabled": true,
+      "bus_id": null,
+      "model": null,
+      "protocol_family": null,
+      "protocol_profile": null,
+      "station_id": null
+    },
+    "wind_speed": {
+      "backend": "fake",
+      "enabled": true,
+      "bus_id": null,
+      "model": null,
+      "protocol_family": null,
+      "protocol_profile": null,
+      "station_id": null
+    },
+    "imu": {
+      "backend": "fake",
+      "enabled": true,
+      "bus_id": null,
+      "model": null,
+      "protocol_family": null,
+      "protocol_profile": null,
+      "station_id": null
+    },
+    "temperature_humidity": {
+      "backend": "fake",
+      "enabled": true,
+      "bus_id": null,
+      "model": null,
+      "protocol_family": null,
+      "protocol_profile": null,
+      "station_id": null
+    }
+  },
+  "relay_outputs": {
+    "squeegee_extend": {
+      "controller_id": "relay_controller",
+      "physical_channel": null
+    },
+    "squeegee_retract": {
+      "controller_id": "relay_controller",
+      "physical_channel": null
+    },
+    "brush_lift_extend": {
+      "controller_id": "relay_controller",
+      "physical_channel": null
+    },
+    "brush_lift_retract": {
+      "controller_id": "relay_controller",
+      "physical_channel": null
+    }
+  },
+  "relay_feedback_inputs": {},
+  "links": {
+    "g20_udp": {
+      "backend": "fake",
+      "role": "primary_control",
+      "listen_address": null,
+      "listen_port": null,
+      "heartbeat_ms": null,
+      "lease_timeout_ms": null
+    },
+    "ec20_mqtt": {
+      "backend": "fake",
+      "role": "auxiliary_backup",
+      "broker_uri": null,
+      "tls_required": true,
+      "tls": {
+        "ca_file": null,
+        "client_certificate_file": null,
+        "client_key_file": null,
+        "server_name": null
+      },
+      "heartbeat_ms": null,
+      "lease_timeout_ms": null,
+      "offline_command_queue": false
+    }
+  },
+  "provisional_fake_values": {
+    "g20_udp": {"heartbeat_ms": 250, "lease_timeout_ms": 750},
+    "ec20_mqtt": {"heartbeat_ms": 1000, "lease_timeout_ms": 3000}
+  },
+  "video": {
+    "path": "rk_usb_camera_to_g20_sdk_to_android",
+    "device": null,
+    "cloud_export": false
+  }
+}

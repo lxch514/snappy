@@ -1,0 +1,74 @@
+
+# ============================================================
+# @file snappy-real-control.service
+# @brief snappy-real 整机控制进程开机自启动
+# ============================================================
+
+[Unit]
+Description=Snappy RK3588 Real Control
+Documentation=file:/root/snappy-real/deploy/README.md
+
+Wants=sys-kernel-debug.mount
+After=local-fs.target sys-kernel-debug.mount systemd-modules-load.service
+
+Before=snappy-real-gateway.service
+
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+User=root
+Group=root
+
+WorkingDirectory=/root/snappy-real
+
+Environment=SNAPPY_SERVICE_NAME=snappy-real-control.service
+Environment=SNAPPY_ROOT=/root/snappy-real
+Environment=SNAPPY_CONFIG=/root/snappy-real/rk3588/config/hardware.debug.test.json
+Environment=SNAPPY_WATCHDOG_DISABLE=1
+Environment=SNAPPY_LOG_LEVEL=info
+Environment=SNAPPY_PACKET_TRACE=0
+Environment=SNAPPY_LOG_DIR=/root/var/log/snappy-real
+
+Environment=SNAPPY_BOOT_WAIT_USB=90
+
+Environment=SNAPPY_BOOT_WAIT_SERIAL=15
+Environment=SNAPPY_BOOT_WAIT_CAN=15
+Environment=SNAPPY_REQUIRE_BOARD_PORTS=0
+Environment=SNAPPY_REQUIRE_CAN=0
+
+Environment=SNAPPY_BOOT_SETTLE=8
+
+ExecStartPre=-/bin/mkdir -p /run/snappy-real
+ExecStartPre=-/bin/mkdir -p /root/var/log/snappy-real
+ExecStartPre=-/bin/mkdir -p /root/var/log/snappy-real/diagnostics
+ExecStartPre=-/bin/mkdir -p /root/var/log/snappy-real/captures
+
+ExecStartPre=-/bin/chmod +x /root/snappy-real/tools/snappy_wait_hardware.sh
+ExecStartPre=-/bin/chmod +x /root/snappy-real/tools/snappy_usb_host_mode.sh
+
+ExecStartPre=/bin/bash /root/snappy-real/tools/snappy_wait_hardware.sh control
+
+ExecStartPre=-/bin/rm -f /run/snappy-real/control.sock
+
+ExecStart=/root/snappy-real/build/rk3588/control/snappy-real-control \
+  --config ${SNAPPY_CONFIG} \
+  --socket /run/snappy-real/control.sock
+
+Restart=always
+RestartSec=5
+
+KillSignal=SIGINT
+KillMode=control-group
+
+TimeoutStartSec=240
+TimeoutStopSec=15
+
+LimitNOFILE=65535
+
+StandardInput=null
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

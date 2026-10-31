@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://snappy.local/contracts/v1/ack.schema.json",
+  "title": "Snappy v1 acknowledgement",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "kind", "robot_id", "link_id", "boot_id",
+    "message_id", "ack_id", "control_epoch", "status", "code", "detail"
+  ],
+  "properties": {
+    "schema_version": {"type": "integer", "const": 1},
+    "kind": {"type": "string", "const": "ack"},
+    "robot_id": {"type": "string", "minLength": 1, "maxLength": 64},
+    "link_id": {"type": "string", "enum": ["g20_udp", "ec20_mqtt"]},
+    "boot_id": {"type": "string", "minLength": 1, "maxLength": 128},
+    "message_id": {"type": "string", "minLength": 1, "maxLength": 128},
+    "ack_id": {"type": "string", "minLength": 1, "maxLength": 128},
+    "control_epoch": {"type": "integer", "minimum": 0},
+    "status": {
+      "type": "string",
+      "enum": ["ACCEPTED", "RUNNING", "SUCCEEDED", "FAILED", "ABORTED", "TIMED_OUT"]
+    },
+    "code": {"type": "string", "minLength": 1, "maxLength": 64},
+    "detail": {"type": "string", "maxLength": 512}
+  }
+}

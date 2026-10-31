@@ -1,0 +1,17 @@
+# ============================================================
+# @file snappy-log-cleanup.service
+# @brief 定期清理 snappy-real 历史日志
+#
+# 一次性服务，由定时器触发；保留天数由 SNAPPY_LOG_KEEP 控制。
+# ============================================================
+
+[Unit]
+Description=Clean Snappy logs older than 10 days
+
+[Service]
+Type=oneshot
+User=root
+Group=root
+Environment=SNAPPY_LOG_DIR=/root/var/log/snappy-real
+Environment=SNAPPY_LOG_KEEP=10
+ExecStart=/root/snappy-real/tools/snappy-log-cleanup.sh

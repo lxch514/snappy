@@ -1,0 +1,20 @@
+# ============================================================
+# @file snappy-real-boot-guard.timer
+# @brief 周期性检查 snappy-real 两个主进程是否在跑
+#
+# OnBootSec=15s   开机 15s 后先查一次（此时 USB 枚举通常刚开始）
+# OnUnitActiveSec 之后每 45s 查一次，保证最终一定起来
+# 不加 Persistent=：这是秒级巡检，不需要补跑
+# ============================================================
+
+[Unit]
+Description=Periodic guard for snappy-real control/gateway
+
+[Timer]
+OnBootSec=15s
+OnUnitActiveSec=45s
+AccuracySec=5s
+Unit=snappy-real-boot-guard.service
+
+[Install]
+WantedBy=timers.target

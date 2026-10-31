@@ -1,0 +1,12 @@
+[Unit]
+Description=Periodic Snappy log cleanup
+
+[Timer]
+OnBootSec=2min
+OnUnitActiveSec=12h
+Persistent=true
+AccuracySec=1min
+Unit=snappy-log-cleanup.service
+
+[Install]
+WantedBy=timers.target

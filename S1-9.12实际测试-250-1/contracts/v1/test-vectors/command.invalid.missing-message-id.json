@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "kind": "command",
+  "robot_id": "snappy-001",
+  "link_id": "g20_udp",
+  "source_id": "remote-01",
+  "boot_id": "boot-0001",
+  "session_id": "session-0001",
+  "seq": 42,
+  "issued_at_ms": 1000,
+  "ttl_ms": 500,
+  "control_epoch": 7,
+  "lease_id": "lease-0007",
+  "action": "rope.set",
+  "params": {}
+}

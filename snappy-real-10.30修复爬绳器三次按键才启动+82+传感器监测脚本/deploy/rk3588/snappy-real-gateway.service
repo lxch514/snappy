@@ -1,0 +1,59 @@
+# ============================================================
+# @file snappy-real-gateway.service
+# @brief snappy-real G20 UDP 网关开机自启动
+# ============================================================
+
+[Unit]
+Description=Snappy G20 UDP Gateway (snappy-real)
+
+Wants=snappy-real-control.service
+After=snappy-real-control.service
+
+PartOf=snappy-real-control.service
+
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+User=root
+Group=root
+WorkingDirectory=/root/snappy-real
+
+Environment=SNAPPY_SERVICE_NAME=snappy-real-gateway.service
+Environment=SNAPPY_ROOT=/root/snappy-real
+Environment=SNAPPY_CONFIG=/root/snappy-real/rk3588/config/hardware.debug.test.json
+Environment=SNAPPY_LOG_DIR=/root/var/log/snappy-real
+Environment=SNAPPY_LOG_LEVEL=info
+Environment=SNAPPY_PACKET_TRACE=0
+
+Environment=G20_VIDEO_RECORD=0
+
+Environment=SNAPPY_BOOT_WAIT_SOCKET=180
+
+ExecStartPre=-/bin/mkdir -p /run/snappy-real
+ExecStartPre=-/bin/mkdir -p /root/var/log/snappy-real/diagnostics
+ExecStartPre=-/bin/mkdir -p /root/var/log/snappy-real/captures
+
+ExecStartPre=/bin/sh -c 'n="${SNAPPY_BOOT_WAIT_SOCKET}"; [ -n "$n" ] || n=180; for i in $(seq 1 "$n"); do [ -S /run/snappy-real/control.sock ] && exit 0; sleep 1; done; echo "snappy-real control socket was not created within ${n}s" >&2; exit 1'
+
+ExecStart=/root/snappy-real/build/rk3588/gateway/snappy-gateway \
+  --config ${SNAPPY_CONFIG} \
+  --socket /run/snappy-real/control.sock
+
+Restart=always
+RestartSec=5
+
+KillSignal=SIGINT
+KillMode=control-group
+
+TimeoutStartSec=240
+TimeoutStopSec=12
+
+LimitNOFILE=65535
+
+StandardInput=null
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

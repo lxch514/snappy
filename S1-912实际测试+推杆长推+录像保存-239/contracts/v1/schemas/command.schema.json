@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://snappy.local/contracts/v1/command.schema.json",
+  "title": "Snappy v1 command",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "kind", "robot_id", "link_id", "source_id",
+    "boot_id", "session_id", "message_id", "seq", "issued_at_ms",
+    "ttl_ms", "control_epoch", "lease_id", "action", "params"
+  ],
+  "properties": {
+    "schema_version": {"type": "integer", "const": 1},
+    "kind": {"type": "string", "const": "command"},
+    "robot_id": {"type": "string", "minLength": 1, "maxLength": 64},
+    "link_id": {"type": "string", "enum": ["g20_udp", "ec20_mqtt"]},
+    "source_id": {"type": "string", "minLength": 1, "maxLength": 64},
+    "boot_id": {"type": "string", "minLength": 1, "maxLength": 128},
+    "session_id": {"type": "string", "minLength": 1, "maxLength": 128},
+    "message_id": {"type": "string", "minLength": 1, "maxLength": 128},
+    "seq": {"type": "integer", "minimum": 0},
+    "issued_at_ms": {"type": "integer", "minimum": 0},
+    "ttl_ms": {"type": "integer", "minimum": 1, "maximum": 1000},
+    "control_epoch": {"type": "integer", "minimum": 0},
+    "lease_id": {"type": ["string", "null"], "maxLength": 128},
+    "action": {"type": "string", "minLength": 1, "maxLength": 128},
+    "params": {"type": "object"}
+  }
+}

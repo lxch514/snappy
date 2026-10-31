@@ -1,0 +1,19 @@
+# ============================================================
+# @file snappy-real-boot-guard.service
+# @brief 开机兜底：把没在运行的 snappy-real 单元拉起来
+# ============================================================
+
+[Unit]
+Description=Snappy real boot guard (start control/gateway if they are down)
+Documentation=file:/root/snappy-real/deploy/README.md
+
+StartLimitIntervalSec=0
+
+[Service]
+Type=oneshot
+User=root
+Group=root
+
+ExecStart=/bin/bash /root/snappy-real/tools/snappy_boot_guard.sh
+
+SuccessExitStatus=0 1

@@ -1,0 +1,20 @@
+[Unit]
+Description=Snappy MQTT telemetry collector
+After=network-online.target mosquitto.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=snappy-cloud
+Group=snappy-cloud
+WorkingDirectory=/opt/snappy
+ExecStart=/usr/bin/python3 -m cloud.collector.collector --database /var/lib/snappy/snappy-cloud.db
+Restart=on-failure
+RestartSec=2
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/snappy /var/log/snappy
+
+[Install]
+WantedBy=multi-user.target

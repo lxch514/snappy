@@ -1,0 +1,55 @@
+# ============================================================
+# @file snappy-gateway.service
+# @brief G20 UDP 网关开机自启动
+#
+# @details
+# - 遥控端程序保持原有实现。
+# - 通过原 GatewayApp 连接新的 actuator-only 控制 socket。
+# - 配置只用于 UDP、视频和协议参数。
+# - 不由网关创建传感器执行器核心。
+# ============================================================
+
+[Unit]
+Description=Snappy G20 UDP Gateway
+Requires=snappy-control.service
+After=snappy-control.service
+PartOf=snappy-control.service
+StartLimitIntervalSec=60
+StartLimitBurst=5
+
+[Service]
+Type=simple
+User=root
+Group=root
+WorkingDirectory=/root/snappy
+
+Environment=SNAPPY_SERVICE_NAME=snappy-gateway.service
+Environment=SNAPPY_ROOT=/root/snappy
+Environment=SNAPPY_CONFIG=/root/snappy/snappy-snappy/config/hardware.debug.actuator-only.json
+Environment=SNAPPY_LOG_DIR=/root/var/log/snappy
+Environment=SNAPPY_LOG_LEVEL=info
+Environment=SNAPPY_PACKET_TRACE=0
+
+ExecStartPre=-/bin/mkdir -p /run/snappy
+ExecStartPre=-/bin/mkdir -p /root/var/log/snappy/diagnostics
+ExecStartPre=-/bin/mkdir -p /root/var/log/snappy/captures
+
+ExecStartPre=/bin/sh -c 'for i in $(seq 1 30); do [ -S /run/snappy/control.sock ] && exit 0; sleep 1; done; echo "control socket was not created" >&2; exit 1'
+
+ExecStart=/root/snappy/build/rk3588/gateway/snappy-gateway \
+  --config ${SNAPPY_CONFIG} \
+  --socket /run/snappy/control.sock
+
+Restart=always
+RestartSec=2
+KillSignal=SIGINT
+KillMode=control-group
+TimeoutStartSec=45
+TimeoutStopSec=8
+
+StandardInput=null
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

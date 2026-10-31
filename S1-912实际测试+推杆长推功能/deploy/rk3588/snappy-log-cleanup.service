@@ -1,0 +1,6 @@
+[Unit]
+Description=Clean Snappy logs older than 10 days
+
+[Service]
+Type=oneshot
+ExecStart=/root/snappy/tools/snappy-log-cleanup.sh

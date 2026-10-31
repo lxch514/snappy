@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://snappy.local/contracts/v1/event.schema.json",
+  "title": "Snappy v1 event",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "kind", "robot_id", "boot_id", "event_id", "emitted_at_ms", "severity", "code", "detail"],
+  "properties": {
+    "schema_version": {"type": "integer", "const": 1},
+    "kind": {"type": "string", "const": "event"},
+    "robot_id": {"type": "string", "minLength": 1, "maxLength": 64},
+    "boot_id": {"type": "string", "minLength": 1, "maxLength": 128},
+    "event_id": {"type": "string", "minLength": 1, "maxLength": 128},
+    "emitted_at_ms": {"type": "integer", "minimum": 0},
+    "severity": {"type": "string", "enum": ["INFO", "WARNING", "ERROR", "CRITICAL"]},
+    "code": {"type": "string", "minLength": 1, "maxLength": 64},
+    "detail": {"type": "string", "maxLength": 1024}
+  }
+}
